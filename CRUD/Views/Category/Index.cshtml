@@ -1,0 +1,17 @@
+﻿@model IEnumerable<CRUD.Models.Category>
+
+<h2>Categories</h2>
+<table>
+    <tr>
+        <th>ID</th>
+        <th>Name</th>
+    </tr>
+    @foreach (var category in Model)
+    {
+        <tr>
+            <td>@category.CategoryId</td>
+            <td>@category.CategoryName</td>
+        </tr>
+    }
+</table>
+<a href="/Category/Create">Add Category</a>
