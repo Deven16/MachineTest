@@ -1,5 +1,31 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CRUD.Models.ProductViewModel
+
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h2>Edit Product</h2>
+
+<form method="post">
+    <input type="hidden" name="ProductId" value="@Model.ProductId" />
+    <input type="hidden" name="CategoryName" value="abcd" />
+    <div class="mb-3">
+        <label for="ProductName" class="form-label">Product Name</label>
+        <input type="text" class="form-control" id="ProductName" name="ProductName" value="@Model.ProductName" required />
+        <span asp-validation-for="ProductName" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label for="CategoryId" class="form-label">Category</label>
+        <select name="CategoryId" asp-for="CategoryId" class="form-control" required>
+            <option value="">-- Select Category --</option>
+            @foreach (var category in Model.Categories)
+            {
+                <option value="@category.Value">@category.Text</option>
+            }
+        </select>
+        <span asp-validation-for="CategoryId" class="text-danger"></span>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save Changes</button>
+</form>

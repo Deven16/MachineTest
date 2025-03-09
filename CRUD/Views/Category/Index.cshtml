@@ -1,17 +1,69 @@
-﻿@model IEnumerable<CRUD.Models.Category>
+﻿@using CRUD.Models
+@model PaginatedList<CRUD.Models.Category>
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+@{
+    ViewData["Title"] = "Category List";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <script>
+        window.onload = function () {
+            alert("@TempData["SuccessMessage"]");
+        };
+    </script>
+}
+<h2 class="text-center">Category List</h2>
 
-<h2>Categories</h2>
-<table>
-    <tr>
-        <th>ID</th>
-        <th>Name</th>
-    </tr>
-    @foreach (var category in Model)
-    {
+<a href="/Category/Create" class="btn btn-success mb-3">Create New Category</a>
+<a href="/Home/Index" class="btn btn-secondary mb-3">Back To Home</a>
+
+<table class="table table-bordered table-striped text-center">
+    <thead class="table-dark">
         <tr>
-            <td>@category.CategoryId</td>
-            <td>@category.CategoryName</td>
+            <th>Category ID</th>
+            <th>Category Name</th>
+            <th>Actions</th>
         </tr>
-    }
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.CategoryId</td>
+                <td>@item.CategoryName</td>
+                <td>
+                    <a href="/Category/Edit/@item.CategoryId" class="btn btn-warning">Edit</a>
+                    <a href="/Category/Delete/@item.CategoryId" class="btn btn-danger" onclick="return confirm('Are you sure?');">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
 </table>
-<a href="/Category/Create">Add Category</a>
+
+<div class="d-flex justify-content-between align-items-center">
+    <div>
+        @if (Model.HasPreviousPage)
+        {
+            <a class="btn btn-primary" href="@Url.Action("Index", new { page = Model.PageIndex - 1 })">Previous</a>
+        }
+        else
+        {
+            <button class="btn btn-secondary" disabled>Previous</button>
+        }
+    </div>
+
+    <span>Page @Model.PageIndex of @Model.TotalPages</span>
+
+    <div>
+        @if (Model.HasNextPage)
+        {
+            <a class="btn btn-primary" href="@Url.Action("Index", new { page = Model.PageIndex + 1 })">Next</a>
+        }
+        else
+        {
+            <button class="btn btn-secondary" disabled>Next</button>
+        }
+    </div>
+</div>

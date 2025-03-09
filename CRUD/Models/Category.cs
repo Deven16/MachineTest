@@ -1,16 +1,16 @@
-using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace CRUD.Models
 {
     public class Category
     {
         [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int CategoryId { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Category Name is required")]
         public string CategoryName { get; set; }
-
-        public ICollection<Product> Products { get; set; }
     }
+
 }

@@ -1,13 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
-using CRUD.Models;
+﻿using CRUD.Models;
+using Microsoft.EntityFrameworkCore;
 
-namespace CRUD.Data
+public class ApplicationDbContext : DbContext
 {
-    public class ApplicationDbContext : DbContext
-    {
-        public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
+    public ApplicationDbContext(DbContextOptions<ApplicationDbContext> options) : base(options) { }
 
-        public DbSet<Category> Categories { get; set; }
-        public DbSet<Product> Products { get; set; }
-    }
+    public DbSet<Product> Products { get; set; }
+    public DbSet<Category> Categories { get; set; }
 }

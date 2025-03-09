@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CRUD.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20250227183635_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20250307183946_UpdateProductAndCategory")]
+    partial class UpdateProductAndCategory
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -57,17 +57,12 @@ namespace CRUD.Migrations
             modelBuilder.Entity("CRUD.Models.Product", b =>
                 {
                     b.HasOne("CRUD.Models.Category", "Category")
-                        .WithMany("Products")
+                        .WithMany()
                         .HasForeignKey("CategoryId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
                     b.Navigation("Category");
-                });
-
-            modelBuilder.Entity("CRUD.Models.Category", b =>
-                {
-                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

@@ -1,5 +1,4 @@
 using Microsoft.EntityFrameworkCore;
-using CRUD.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -27,10 +26,16 @@ app.UseStaticFiles();
 
 app.UseRouting();
 app.UseAuthorization();
+//app.UseEndpoints(endpoints =>
+//{
+//    endpoints.MapControllerRoute(
+//        name: "default",
+//        pattern: "{controller=Product}/{action=Index}/{page?}");
+//});
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllerRoute(
         name: "default",
-        pattern: "{controller=Product}/{action=Index}/{page?}");
+        pattern: "{controller=Home}/{action=Index}/{id?}");
 });
 app.Run();

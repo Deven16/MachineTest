@@ -1,38 +1,84 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using CRUD.Data;
 using CRUD.Models;
 
-namespace CRUD.Controllers
+public class CategoryController : Controller
 {
-    public class CategoryController : Controller
+    private readonly ApplicationDbContext _context;
+
+    public CategoryController(ApplicationDbContext context)
     {
-        private readonly ApplicationDbContext _context;
+        _context = context;
+    }
+    public async Task<IActionResult> Index(int? page)
+    {
+        int pageSize = 10;
+        var categories = _context.Categories.AsQueryable();
 
-        public CategoryController(ApplicationDbContext context)
+        var paginatedCategories = await PaginatedList<Category>.CreateAsync(categories, page ?? 1, pageSize);
+
+        return View(paginatedCategories);
+    }
+    public IActionResult Create()
+    {
+        return View();
+    }
+    public IActionResult Edit(int id)
+    {
+        var category = _context.Categories.FirstOrDefault(c => c.CategoryId == id);
+
+        if (category == null)
         {
-            _context = context;
+            return NotFound();
         }
 
-        public IActionResult Index()
-        {
-            return View(_context.Categories.ToList());
-        }
+        return View(category);
+    }
 
-        public IActionResult Create()
-        {
-            return View();
-        }
 
-        [HttpPost]
-        public IActionResult Create(Category category)
+    [HttpPost]
+    public IActionResult Create(Category category)
+    {
+        if (ModelState.IsValid)
         {
-            if (ModelState.IsValid)
+            _context.Categories.Add(category);
+            _context.SaveChanges();
+
+            TempData["SuccessMessage"] = "Category saved successfully!"; 
+            return RedirectToAction("Index", "Category"); 
+        }
+        return View(category);
+    }
+
+    [HttpPost]
+    public IActionResult Edit(Category model)
+    {
+        if (ModelState.IsValid)
+        {
+            var category = _context.Categories.FirstOrDefault(c => c.CategoryId == model.CategoryId);
+            if (category != null)
             {
-                _context.Categories.Add(category);
+                category.CategoryName = model.CategoryName;
+
                 _context.SaveChanges();
+                TempData["SuccessMessage"] = "Category updated successfully!";
                 return RedirectToAction("Index");
             }
-            return View(category);
         }
+
+        return View(model);
+    }
+
+
+    public IActionResult Delete(int id)
+    {
+        var category = _context.Categories.Find(id);
+        if (category == null)
+        {
+            return NotFound();
+        }
+        _context.Categories.Remove(category);
+        _context.SaveChanges();
+        TempData["SuccessMessage"] = "Category deleted successfully!";
+        return RedirectToAction("Index", "Category");
     }
 }

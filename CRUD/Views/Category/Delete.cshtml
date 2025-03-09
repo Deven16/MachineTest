@@ -1,5 +1,14 @@
-﻿@*
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
+﻿@model CRUD.Models.Category
+
 @{
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h2>Delete Category</h2>
+
+<p>Are you sure you want to delete the category "<strong>@Model.CategoryName</strong>"?</p>
+
+<form method="post">
+    <button type="submit" class="btn btn-danger">Yes, Delete</button>
+    <a href="/Category/Index" class="btn btn-secondary">Cancel</a>
+</form>
